@@ -1,6 +1,5 @@
-# Novel API
 
-REST API for an online novel platform with complete features.
+
 
 ## Features
 
