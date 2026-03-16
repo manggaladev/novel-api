@@ -185,6 +185,3 @@ UPLOAD_DIR=./uploads
 MAX_FILE_SIZE=10485760
 ```
 
-## License
-
-MIT
