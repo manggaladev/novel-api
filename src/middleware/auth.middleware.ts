@@ -10,7 +10,7 @@ declare global {
         id: string;
         email: string;
         username: string;
-        role: 'ADMIN' | 'USER';
+        role: 'ADMIN' | 'AUTHOR' | 'USER';
       };
     }
   }
@@ -125,3 +125,6 @@ export const isOwnerOrAdmin = (getOwnerId: (req: Request) => string): RequestHan
     res.status(403).json({ success: false, error: 'Access denied' });
   };
 };
+
+// Alias for backward compatibility
+export const authenticate = auth;

@@ -170,7 +170,6 @@ model Chapter {
   // Relations
   novel            Novel             @relation(fields: [novelId], references: [id], onDelete: Cascade)
   comments         Comment[]
-  commentLikes     CommentLike[]
   readingHistories ReadingHistory[]
   readingProgress  ReadingProgress[]
 

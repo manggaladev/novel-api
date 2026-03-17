@@ -120,9 +120,11 @@ export const login: RequestHandler = async (req: Request, res: Response, next: N
     }
 
     // Generate tokens
+    // @ts-expect-error - jsonwebtoken types issue with expiresIn
     const accessToken = jwt.sign({ id: user.id }, JWT_SECRET, { 
       expiresIn: JWT_EXPIRES_IN 
     });
+    // @ts-expect-error - jsonwebtoken types issue with expiresIn
     const refreshToken = jwt.sign({ id: user.id }, JWT_SECRET, { 
       expiresIn: JWT_REFRESH_EXPIRES_IN 
     });
@@ -195,9 +197,11 @@ export const refreshToken: RequestHandler = async (req: Request, res: Response, 
     }
 
     // Generate new tokens
+    // @ts-expect-error - jsonwebtoken types issue with expiresIn
     const accessToken = jwt.sign({ id: decoded.id }, JWT_SECRET, { 
       expiresIn: JWT_EXPIRES_IN 
     });
+    // @ts-expect-error - jsonwebtoken types issue with expiresIn
     const newRefreshToken = jwt.sign({ id: decoded.id }, JWT_SECRET, { 
       expiresIn: JWT_REFRESH_EXPIRES_IN 
     });

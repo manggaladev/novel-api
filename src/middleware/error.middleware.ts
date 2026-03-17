@@ -1,7 +1,7 @@
 import { Request, Response, NextFunction } from 'express';
 import { Prisma } from '@prisma/client';
 
-interface AppError extends Error {
+export interface AppError extends Error {
   statusCode?: number;
   status?: string;
   code?: string;
@@ -47,7 +47,7 @@ export const errorHandler = (
   if (err instanceof Prisma.PrismaClientKnownRequestError) {
     switch (err.code) {
       case 'P2002':
-        const field = (err.meta?.target as string[])?.join(', ') || 'field';
+        const field = ((err as any).meta?.target as string[])?.join(', ') || 'field';
         res.status(409).json({
           success: false,
           error: `Duplicate value for ${field}`,
@@ -111,7 +111,7 @@ export const errorHandler = (
   }
 
   // Default error
-  const statusCode = err.statusCode || err.status || 500;
+  const statusCode = typeof err.statusCode === 'number' ? err.statusCode : 500;
   const message = err.message || 'Internal server error';
 
   res.status(statusCode).json({

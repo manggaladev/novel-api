@@ -14,7 +14,7 @@ const avatarsDir = path.join(uploadDir, 'avatars');
 });
 
 // File filter for images
-const imageFilter = (req: Express.Request, file: Express.File, cb: multer.FileFilterCallback) => {
+const imageFilter = (req: Express.Request, file: Express.Multer.File, cb: multer.FileFilterCallback) => {
   const allowedMimes = ['image/jpeg', 'image/jpg', 'image/png', 'image/webp'];
   
   if (allowedMimes.includes(file.mimetype as string)) {

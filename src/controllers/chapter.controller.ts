@@ -238,7 +238,7 @@ export const getChapterByNumber: RequestHandler = async (req: Request, res: Resp
     const chapter = await prisma.chapter.findFirst({
       where: {
         novelId,
-        chapterNum: parseInt(chapterNum),
+        chapterNum: parseInt(chapterNum as string),
       },
       include: {
         novel: {
