@@ -73,7 +73,7 @@ export const getScheduledChapters: RequestHandler = async (req: Request, res: Re
  */
 export const getChapters: RequestHandler = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
   try {
-    const { novelId } = req.params;
+    const novelId = req.params.novelId as string;
     const { page = 1, limit = 20, sort = 'chapterNum', order = 'asc' } = req.query as any;
 
     const skip = (page - 1) * limit;
@@ -81,7 +81,7 @@ export const getChapters: RequestHandler = async (req: Request, res: Response, n
     // Check novel exists
     const novel = await prisma.novel.findUnique({
       where: { id: novelId },
-      select: { id: true, title: true },
+      select: { id: true, title: true, authorId: true },
     });
 
     if (!novel) {
@@ -142,7 +142,7 @@ export const getChapters: RequestHandler = async (req: Request, res: Response, n
  */
 export const getChapterById: RequestHandler = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
   try {
-    const { id } = req.params;
+    const id = req.params.id as string;
 
     const chapter = await prisma.chapter.findUnique({
       where: { id },
@@ -233,7 +233,7 @@ export const getChapterById: RequestHandler = async (req: Request, res: Response
  */
 export const getChapterByNumber: RequestHandler = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
   try {
-    const { novelId, chapterNum } = req.params;
+    const { novelId, chapterNum } = req.params as { novelId: string; chapterNum: string };
 
     const chapter = await prisma.chapter.findFirst({
       where: {
@@ -315,7 +315,7 @@ export const createChapter: RequestHandler = async (req: Request, res: Response,
       return;
     }
 
-    const { novelId } = req.params;
+    const novelId = req.params.novelId as string;
     const { title, chapterNum, content, publishedAt, isScheduled } = req.body;
 
     // Check novel exists and user owns it
@@ -403,7 +403,7 @@ export const updateChapter: RequestHandler = async (req: Request, res: Response,
       return;
     }
 
-    const { id } = req.params;
+    const id = req.params.id as string;
     const { title, content } = req.body;
 
     const chapter = await prisma.chapter.findUnique({
@@ -465,7 +465,7 @@ export const deleteChapter: RequestHandler = async (req: Request, res: Response,
       return;
     }
 
-    const { id } = req.params;
+    const id = req.params.id as string;
 
     const chapter = await prisma.chapter.findUnique({
       where: { id },

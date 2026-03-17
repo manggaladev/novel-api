@@ -17,7 +17,7 @@ export const getProgress: RequestHandler = async (req: Request, res: Response, n
       return;
     }
 
-    const { novelId } = req.params;
+    const novelId = req.params.novelId as string;
 
     const progress = await prisma.readingProgress.findUnique({
       where: {
@@ -69,7 +69,8 @@ export const updateProgress: RequestHandler = async (req: Request, res: Response
       return;
     }
 
-    const { novelId, chapterId } = req.params;
+    const novelId = req.params.novelId as string;
+    const chapterId = req.params.chapterId as string;
     const { progress: progressPercent = 0 } = req.body;
 
     // Verify chapter belongs to novel

@@ -5,7 +5,7 @@
 
 import { Request, Response, NextFunction } from 'express';
 import prisma from '../config/database';
-import { AppError, notFound, badRequest, unauthorized } from '../middleware/error.middleware';
+import { AppError, notFound, notFoundError, badRequest, unauthorized } from '../middleware/error.middleware';
 
 /**
  * @swagger
@@ -35,7 +35,7 @@ export const followUser = async (
       throw unauthorized('Unauthorized');
     }
 
-    const { userId } = req.params;
+    const userId = req.params.userId as string;
     const followerId = req.user.id;
 
     // Cannot follow self
@@ -50,7 +50,7 @@ export const followUser = async (
     });
 
     if (!targetUser) {
-      throw notFound('User');
+      throw notFoundError('User');
     }
 
     // Check if already following
@@ -127,7 +127,7 @@ export const unfollowUser = async (
       throw unauthorized('Unauthorized');
     }
 
-    const { userId } = req.params;
+    const userId = req.params.userId as string;
     const followerId = req.user.id;
 
     const follow = await prisma.follow.findUnique({
@@ -169,7 +169,7 @@ export const getFollowers = async (
   next: NextFunction
 ): Promise<void> => {
   try {
-    const { userId } = req.params;
+    const userId = req.params.userId as string;
     const page = parseInt(req.query.page as string) || 1;
     const limit = Math.min(parseInt(req.query.limit as string) || 20, 100);
     const skip = (page - 1) * limit;
@@ -227,7 +227,7 @@ export const getFollowing = async (
   next: NextFunction
 ): Promise<void> => {
   try {
-    const { userId } = req.params;
+    const userId = req.params.userId as string;
     const page = parseInt(req.query.page as string) || 1;
     const limit = Math.min(parseInt(req.query.limit as string) || 20, 100);
     const skip = (page - 1) * limit;
@@ -287,7 +287,7 @@ export const getFollowStatus = async (
   next: NextFunction
 ): Promise<void> => {
   try {
-    const { userId } = req.params;
+    const userId = req.params.userId as string;
     const currentUserId = req.user?.id;
 
     let isFollowing = false;

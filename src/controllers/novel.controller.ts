@@ -226,7 +226,7 @@ export const getNovels: RequestHandler = async (req: Request, res: Response, nex
  */
 export const getNovelById: RequestHandler = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
   try {
-    const { id } = req.params;
+    const id = req.params.id as string;
 
     const novel = await prisma.novel.findUnique({
       where: { id },
@@ -281,7 +281,7 @@ export const getNovelById: RequestHandler = async (req: Request, res: Response, 
  */
 export const getNovelBySlug: RequestHandler = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
   try {
-    const { slug } = req.params;
+    const slug = req.params.slug as string;
 
     const novel = await prisma.novel.findUnique({
       where: { slug },
@@ -434,7 +434,7 @@ export const updateNovel: RequestHandler = async (req: Request, res: Response, n
       return;
     }
 
-    const { id } = req.params;
+    const id = req.params.id as string;
     const { title, synopsis, status, genreIds } = req.body;
     const cover = req.file;
 
@@ -532,7 +532,7 @@ export const deleteNovel: RequestHandler = async (req: Request, res: Response, n
       return;
     }
 
-    const { id } = req.params;
+    const id = req.params.id as string;
 
     const novel = await prisma.novel.findUnique({
       where: { id },

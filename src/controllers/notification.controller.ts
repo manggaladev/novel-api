@@ -86,7 +86,7 @@ export const markAsRead = async (
       throw unauthorized('Unauthorized');
     }
 
-    const { id } = req.params;
+    const id = req.params.id as string;
 
     const notification = await prisma.notification.findUnique({
       where: { id },
@@ -177,7 +177,7 @@ export const deleteNotification = async (
       throw unauthorized('Unauthorized');
     }
 
-    const { id } = req.params;
+    const id = req.params.id as string;
 
     const notification = await prisma.notification.findUnique({
       where: { id },

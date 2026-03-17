@@ -80,7 +80,7 @@ export const deleteHistoryEntry: RequestHandler = async (req: Request, res: Resp
       return;
     }
 
-    const { id } = req.params;
+    const id = req.params.id as string;
 
     const history = await prisma.readingHistory.findUnique({
       where: { id },
@@ -163,7 +163,7 @@ export const getContinueReading: RequestHandler = async (req: Request, res: Resp
       return;
     }
 
-    const { novelId } = req.params;
+    const novelId = req.params.novelId as string;
 
     const lastHistory = await prisma.readingHistory.findFirst({
       where: {

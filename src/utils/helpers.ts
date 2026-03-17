@@ -6,6 +6,14 @@
 import sanitizeHtml from 'sanitize-html';
 
 /**
+ * Extract string param from Express 5 params (string | string[])
+ */
+export const getParam = (param: string | string[] | undefined): string => {
+  if (!param) return '';
+  return Array.isArray(param) ? param[0] : param;
+};
+
+/**
  * Generate URL-friendly slug from title
  */
 export const generateSlug = (title: string): string => {

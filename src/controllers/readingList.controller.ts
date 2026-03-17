@@ -5,7 +5,7 @@
 
 import { Request, Response, NextFunction } from 'express';
 import prisma from '../config/database';
-import { notFound, badRequest, unauthorized, forbidden } from '../middleware/error.middleware';
+import { notFound, notFoundError, badRequest, unauthorized, forbidden } from '../middleware/error.middleware';
 
 /**
  * @swagger
@@ -74,7 +74,7 @@ export const getReadingList = async (
   next: NextFunction
 ): Promise<void> => {
   try {
-    const { id } = req.params;
+    const id = req.params.id as string;
     const page = parseInt(req.query.page as string) || 1;
     const limit = Math.min(parseInt(req.query.limit as string) || 20, 100);
     const skip = (page - 1) * limit;
@@ -118,7 +118,7 @@ export const getReadingList = async (
     });
 
     if (!list) {
-      throw notFound('Reading list');
+      throw notFoundError('Reading list');
     }
 
     // Check if list is public or owned by user
@@ -227,7 +227,7 @@ export const updateReadingList = async (
       throw unauthorized('Unauthorized');
     }
 
-    const { id } = req.params;
+    const id = req.params.id as string;
     const { name, description, isPublic } = req.body;
 
     const list = await prisma.readingList.findUnique({
@@ -235,7 +235,7 @@ export const updateReadingList = async (
     });
 
     if (!list) {
-      throw notFound('Reading list');
+      throw notFoundError('Reading list');
     }
 
     if (list.userId !== req.user.id) {
@@ -280,14 +280,14 @@ export const deleteReadingList = async (
       throw unauthorized('Unauthorized');
     }
 
-    const { id } = req.params;
+    const id = req.params.id as string;
 
     const list = await prisma.readingList.findUnique({
       where: { id },
     });
 
     if (!list) {
-      throw notFound('Reading list');
+      throw notFoundError('Reading list');
     }
 
     if (list.userId !== req.user.id && req.user.role !== 'ADMIN') {
@@ -326,7 +326,8 @@ export const addNovelToList = async (
       throw unauthorized('Unauthorized');
     }
 
-    const { id, novelId } = req.params;
+    const id = req.params.id as string;
+    const novelId = req.params.novelId as string;
 
     // Check if list exists and belongs to user
     const list = await prisma.readingList.findUnique({
@@ -334,7 +335,7 @@ export const addNovelToList = async (
     });
 
     if (!list) {
-      throw notFound('Reading list');
+      throw notFoundError('Reading list');
     }
 
     if (list.userId !== req.user.id) {
@@ -347,7 +348,7 @@ export const addNovelToList = async (
     });
 
     if (!novel) {
-      throw notFound('Novel');
+      throw notFoundError('Novel');
     }
 
     // Check if novel already in list
@@ -406,14 +407,15 @@ export const removeNovelFromList = async (
       throw unauthorized('Unauthorized');
     }
 
-    const { id, novelId } = req.params;
+    const id = req.params.id as string;
+    const novelId = req.params.novelId as string;
 
     const list = await prisma.readingList.findUnique({
       where: { id },
     });
 
     if (!list) {
-      throw notFound('Reading list');
+      throw notFoundError('Reading list');
     }
 
     if (list.userId !== req.user.id) {

@@ -185,7 +185,7 @@ export const resolveReport: RequestHandler = async (req: Request, res: Response,
       return;
     }
 
-    const { id } = req.params;
+    const id = req.params.id as string;
     const { status, action } = req.body;
 
     const report = await prisma.report.findUnique({
@@ -260,7 +260,7 @@ export const getReportById: RequestHandler = async (req: Request, res: Response,
       return;
     }
 
-    const { id } = req.params;
+    const id = req.params.id as string;
 
     const report = await prisma.report.findUnique({
       where: { id },

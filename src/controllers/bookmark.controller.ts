@@ -75,7 +75,7 @@ export const addBookmark: RequestHandler = async (req: Request, res: Response, n
       return;
     }
 
-    const { novelId } = req.params;
+    const novelId = req.params.novelId as string;
 
     // Check if novel exists
     const novel = await prisma.novel.findUnique({
@@ -147,7 +147,7 @@ export const removeBookmark: RequestHandler = async (req: Request, res: Response
       return;
     }
 
-    const { novelId } = req.params;
+    const novelId = req.params.novelId as string;
 
     const bookmark = await prisma.bookmark.findUnique({
       where: {
@@ -198,7 +198,7 @@ export const checkBookmark: RequestHandler = async (req: Request, res: Response,
       return;
     }
 
-    const { novelId } = req.params;
+    const novelId = req.params.novelId as string;
 
     const bookmark = await prisma.bookmark.findUnique({
       where: {

@@ -11,7 +11,7 @@ import { buildPaginationMeta, calculateAverageRating } from '../utils/helpers';
  */
 export const getRatings: RequestHandler = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
   try {
-    const { novelId } = req.params;
+    const novelId = req.params.novelId as string;
     const { page = 1, limit = 10 } = req.query as any;
     const skip = (page - 1) * limit;
 
@@ -76,7 +76,7 @@ export const rateNovel: RequestHandler = async (req: Request, res: Response, nex
       return;
     }
 
-    const { novelId } = req.params;
+    const novelId = req.params.novelId as string;
     const { score } = req.body;
 
     // Check if novel exists
@@ -174,7 +174,7 @@ export const getMyRating: RequestHandler = async (req: Request, res: Response, n
       return;
     }
 
-    const { novelId } = req.params;
+    const novelId = req.params.novelId as string;
 
     const rating = await prisma.rating.findUnique({
       where: {
@@ -210,7 +210,7 @@ export const removeRating: RequestHandler = async (req: Request, res: Response, 
       return;
     }
 
-    const { novelId } = req.params;
+    const novelId = req.params.novelId as string;
 
     const rating = await prisma.rating.findUnique({
       where: {

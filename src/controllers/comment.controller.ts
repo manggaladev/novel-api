@@ -11,7 +11,7 @@ import { buildPaginationMeta, sanitizeHtmlContent } from '../utils/helpers';
  */
 export const getComments: RequestHandler = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
   try {
-    const { chapterId } = req.params;
+    const chapterId = req.params.chapterId as string;
     const { page = 1, limit = 20 } = req.query as any;
     const skip = (page - 1) * limit;
 
@@ -64,7 +64,7 @@ export const getComments: RequestHandler = async (req: Request, res: Response, n
  */
 export const getReplies: RequestHandler = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
   try {
-    const { id } = req.params;
+    const id = req.params.id as string;
     const { page = 1, limit = 10 } = req.query as any;
     const skip = (page - 1) * limit;
 
@@ -119,7 +119,7 @@ export const addComment: RequestHandler = async (req: Request, res: Response, ne
       return;
     }
 
-    const { chapterId } = req.params;
+    const chapterId = req.params.chapterId as string;
     const { content, parentId } = req.body;
 
     // Check if chapter exists
@@ -240,7 +240,7 @@ export const updateComment: RequestHandler = async (req: Request, res: Response,
       return;
     }
 
-    const { id } = req.params;
+    const id = req.params.id as string;
     const { content } = req.body;
 
     const comment = await prisma.comment.findUnique({
@@ -305,7 +305,7 @@ export const deleteComment: RequestHandler = async (req: Request, res: Response,
       return;
     }
 
-    const { id } = req.params;
+    const id = req.params.id as string;
 
     const comment = await prisma.comment.findUnique({
       where: { id },
@@ -373,7 +373,7 @@ export const likeComment: RequestHandler = async (req: Request, res: Response, n
       return;
     }
 
-    const { id } = req.params;
+    const id = req.params.id as string;
 
     const comment = await prisma.comment.findUnique({
       where: { id },
@@ -465,7 +465,7 @@ export const unlikeComment: RequestHandler = async (req: Request, res: Response,
       return;
     }
 
-    const { id } = req.params;
+    const id = req.params.id as string;
 
     const like = await prisma.commentLike.findUnique({
       where: {

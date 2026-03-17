@@ -190,7 +190,7 @@ export const getAllUsers = async (
     const search = req.query.search as string;
     const role = req.query.role as string;
 
-    const where = {
+    const where: any = {
       ...(search && {
         OR: [
           { username: { contains: search, mode: 'insensitive' } },
@@ -273,7 +273,7 @@ export const updateUserRole = async (
       throw forbidden('Admin access required');
     }
 
-    const { id } = req.params;
+    const id = req.params.id as string;
     const { role } = req.body;
 
     if (!['USER', 'AUTHOR', 'ADMIN'].includes(role)) {

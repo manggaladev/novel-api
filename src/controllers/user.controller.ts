@@ -5,7 +5,7 @@
 
 import { Request, Response, NextFunction } from 'express';
 import prisma from '../config/database';
-import { notFound, unauthorized } from '../middleware/error.middleware';
+import { notFound, notFoundError, unauthorized } from '../middleware/error.middleware';
 
 /**
  * @swagger
@@ -20,7 +20,7 @@ export const getUserProfile = async (
   next: NextFunction
 ): Promise<void> => {
   try {
-    const { id } = req.params;
+    const id = req.params.id as string;
 
     const user = await prisma.user.findUnique({
       where: { id },
@@ -42,7 +42,7 @@ export const getUserProfile = async (
     });
 
     if (!user) {
-      throw notFound('User');
+      throw notFoundError('User');
     }
 
     res.json({
@@ -72,7 +72,7 @@ export const getUserNovels = async (
   next: NextFunction
 ): Promise<void> => {
   try {
-    const { id } = req.params;
+    const id = req.params.id as string;
     const page = parseInt(req.query.page as string) || 1;
     const limit = Math.min(parseInt(req.query.limit as string) || 20, 100);
     const skip = (page - 1) * limit;

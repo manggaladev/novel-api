@@ -179,7 +179,7 @@ export const getRecommendations: RequestHandler = async (req: Request, res: Resp
  */
 export const getSimilarNovels: RequestHandler = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
   try {
-    const { id } = req.params;
+    const id = req.params.id as string;
     const { limit = 10 } = req.query as any;
 
     // Get the novel with its genres and author

@@ -49,7 +49,7 @@ export const getGenres: RequestHandler = async (req: Request, res: Response, nex
  */
 export const getGenreById: RequestHandler = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
   try {
-    const { id } = req.params;
+    const id = req.params.id as string;
 
     const genre = await prisma.genre.findUnique({
       where: { id },
@@ -133,7 +133,7 @@ export const createGenre: RequestHandler = async (req: Request, res: Response, n
  */
 export const updateGenre: RequestHandler = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
   try {
-    const { id } = req.params;
+    const id = req.params.id as string;
     const { name } = req.body;
 
     const existingGenre = await prisma.genre.findUnique({
@@ -195,7 +195,7 @@ export const updateGenre: RequestHandler = async (req: Request, res: Response, n
  */
 export const deleteGenre: RequestHandler = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
   try {
-    const { id } = req.params;
+    const id = req.params.id as string;
 
     const genre = await prisma.genre.findUnique({
       where: { id },

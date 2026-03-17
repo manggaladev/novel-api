@@ -13,6 +13,7 @@ const router = Router();
  */
 
 // Upload avatar
+// @ts-expect-error - multer type mismatch with express 5 types
 router.post('/avatar', auth, uploadAvatar.single('avatar'), async (req, res, next) => {
   try {
     if (!req.file) {

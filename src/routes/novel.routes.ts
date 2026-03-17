@@ -42,7 +42,9 @@ router.get('/:id/similar', validate(novelIdSchema), getSimilarNovels);
 router.get('/:id', validate(novelIdSchema), optionalAuth, getNovelById);
 
 // Protected routes (require auth)
+// @ts-expect-error - multer type mismatch with express 5 types
 router.post('/', auth, uploadCover.single('cover'), validate(createNovelSchema), createNovel);
+// @ts-expect-error - multer type mismatch with express 5 types
 router.put('/:id', auth, uploadCover.single('cover'), validate(updateNovelSchema), updateNovel);
 router.delete('/:id', auth, validate(novelIdSchema), deleteNovel);
 
