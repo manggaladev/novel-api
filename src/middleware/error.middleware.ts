@@ -7,6 +7,34 @@ interface AppError extends Error {
   code?: string;
 }
 
+export const unauthorized = (message: string = 'Unauthorized'): AppError => {
+  const error = new Error(message) as AppError;
+  error.statusCode = 401;
+  error.status = 'fail';
+  return error;
+};
+
+export const forbidden = (message: string = 'Forbidden'): AppError => {
+  const error = new Error(message) as AppError;
+  error.statusCode = 403;
+  error.status = 'fail';
+  return error;
+};
+
+export const badRequest = (message: string = 'Bad Request'): AppError => {
+  const error = new Error(message) as AppError;
+  error.statusCode = 400;
+  error.status = 'fail';
+  return error;
+};
+
+export const notFoundError = (message: string = 'Not Found'): AppError => {
+  const error = new Error(message) as AppError;
+  error.statusCode = 404;
+  error.status = 'fail';
+  return error;
+};
+
 export const errorHandler = (
   err: AppError,
   req: Request,
