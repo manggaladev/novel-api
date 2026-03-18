@@ -1,12 +1,12 @@
 // Prisma Schema for Novel API
-// Database: PostgreSQL
+// Database: SQLite (for development/testing)
 
 generator client {
   provider = "prisma-client-js"
 }
 
 datasource db {
-  provider = "postgresql"
+  provider = "sqlite"
   url      = env("DATABASE_URL")
 }
 
@@ -25,7 +25,7 @@ model User {
   password      String
   role          UserRole @default(USER)
   avatar        String?
-  bio           String?  @db.Text
+  bio           String?
   isVerified    Boolean  @default(false)
   createdAt     DateTime @default(now())
   updatedAt     DateTime @updatedAt
@@ -65,7 +65,7 @@ model VerificationToken {
   id        String   @id @default(uuid())
   token     String   @unique
   userId    String
-  type      String   // 'email_verification' | 'password_reset'
+  type      String
   expiresAt DateTime
   createdAt DateTime @default(now())
 
@@ -76,10 +76,10 @@ model VerificationToken {
 model Notification {
   id        String   @id @default(uuid())
   userId    String
-  type      String   // 'info' | 'warning' | 'success' | 'error' | 'comment' | 'like' | 'follow' | 'chapter'
+  type      String
   title     String
   message   String
-  data      Json?    // Additional data like novelId, chapterId, etc.
+  data      String?
   isRead    Boolean  @default(false)
   createdAt DateTime @default(now())
 
@@ -90,11 +90,10 @@ model Notification {
   @@map("notifications")
 }
 
-// Follow system
 model Follow {
   id          String   @id @default(uuid())
-  followerId  String   // User who follows
-  followingId String   // User being followed
+  followerId  String
+  followingId String
   createdAt   DateTime @default(now())
 
   follower  User @relation("UserFollowing", fields: [followerId], references: [id], onDelete: Cascade)
@@ -118,7 +117,7 @@ model Novel {
   id              String      @id @default(uuid())
   title           String
   slug            String      @unique
-  synopsis        String?     @db.Text
+  synopsis        String?
   coverUrl        String?
   status          NovelStatus @default(ONGOING)
   publishedAt     DateTime?
@@ -156,7 +155,7 @@ model Chapter {
   id            String    @id @default(uuid())
   title         String
   chapterNum    Int
-  content       String    @db.Text
+  content       String
   novelId       String
   viewsCount    Int       @default(0)
   wordCount     Int       @default(0)
@@ -221,13 +220,12 @@ model Bookmark {
   @@map("bookmarks")
 }
 
-// Nested comments support
 model Comment {
   id           String   @id @default(uuid())
-  content      String   @db.Text
+  content      String
   userId       String
   chapterId    String
-  parentId     String?  // For nested replies
+  parentId     String?
   likesCount   Int      @default(0)
   createdAt    DateTime @default(now())
   updatedAt    DateTime @updatedAt
@@ -244,7 +242,6 @@ model Comment {
   @@map("comments")
 }
 
-// Comment likes
 model CommentLike {
   id        String   @id @default(uuid())
   userId    String
@@ -263,7 +260,7 @@ model Rating {
   id        String   @id @default(uuid())
   userId    String
   novelId   String
-  score     Int      // 1-5
+  score     Int
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
@@ -328,7 +325,7 @@ model ReadingProgress {
   userId      String
   novelId     String
   chapterId   String
-  progress    Float    @default(0) // Percentage of chapter read (0-100)
+  progress    Float    @default(0)
   lastReadAt  DateTime @default(now())
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
@@ -365,8 +362,8 @@ model Report {
   reporterId  String
   type        ReportType
   targetId    String
-  reason      String       @db.Text
-  description String?      @db.Text
+  reason      String
+  description String?
   status      ReportStatus @default(PENDING)
   resolvedBy  String?
   resolvedAt  DateTime?
@@ -389,7 +386,7 @@ model AdminActivity {
   id        String   @id @default(uuid())
   action    String
   userId    String?
-  details   Json?
+  details   String?
   createdAt DateTime @default(now())
 
   @@index([createdAt])
