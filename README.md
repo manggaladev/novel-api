@@ -112,8 +112,3 @@ novel-api/
 
 [MIT License](LICENSE)
 
-## 🔗 Links
-
-- [GitHub Repository](https://github.com/manggaladev/novel-api)
-- [GraphQL Wrapper](https://github.com/manggaladev/graphql-novel-wrapper)
-- [Issues](https://github.com/manggaladev/novel-api/issues)
